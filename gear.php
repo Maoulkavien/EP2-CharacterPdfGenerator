@@ -1,23 +1,17 @@
 <?php
-require('fpdf.php');
-require('lib_gear.php');
+require('lib/libgear.php');
 require_once __DIR__ . '/vendor/autoload.php';
+
 // Create an instance of the class:
-$pdf = new \Mpdf\Mpdf();
-$pdf->SetSourceFile('Maoulkavien-EP2_Gear.pdf');
-$pdf->UseTemplate($pdf->ImportPage(1));
-require('LZCompressor/LZString.php');
-require('LZCompressor/LZContext.php');
-require('LZCompressor/LZUtil.php');
-require('LZCompressor/LZData.php');
-require('LZCompressor/LZReverseDictionary.php');
+$pdf = newPDF('Maoulkavien-EP2_Gear.pdf');
 
-use LZCompressor\LZString as LZ;
+$char = loadCharacter($_POST['data']);
+$references = loadReferences();
 
-$json_string= LZ::decompressFromBase64($_POST['data']);
-$char = json_decode($json_string);
+$traits = $references->traits;
+$wares = $references->wares;
+$morphs = $references->morphs;
 
-$pdf->SetMargins(0,0,0,0);
 
 gearHeaders();
 gearPack();
@@ -27,4 +21,5 @@ gearPack();
 //gearAli();
 
 $pdf->Output($char->name.'-Gear.pdf', 'I');
+
 ?>
