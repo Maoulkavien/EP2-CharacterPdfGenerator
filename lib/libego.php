@@ -75,7 +75,8 @@ function egoAptitudes($hints=false){
 function egoTraits(){
   global $pdf;
   global $char;
-  global $traits;
+  global $references;
+  $traits = $references->traits;
   $fontSize=6;
   $o = - pt2mm($fontSize);
   $pdf->SetFont('Arial','',$fontSize);
