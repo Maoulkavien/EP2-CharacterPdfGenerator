@@ -7,7 +7,9 @@ function loadJson($filename= null){
 }
 
 function loadCharacter($LZstring = null){
-  return json_decode(LZ::decompressFromBase64($_POST['data']));
+  $LZstring = preg_replace("/^\/\/.*[\r|\n]+/m","",$LZstring);
+  $jsonString = LZ::decompressFromBase64($LZstring);
+  return json_decode($jsonString);
 }
 
 function loadReferences(){
