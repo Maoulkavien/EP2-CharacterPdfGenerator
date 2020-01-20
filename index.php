@@ -77,8 +77,8 @@ Paste the exported result from Arokha helper here : <br>
 <input type="checkbox" id="morphStatsHints" name="morphStatsHints" value="1" checked="checked"/>Display hints for body stats <br>
 
 
-<input type="submit" value="Morph" onclick="document.getElementById('form').setAttribute('action','morph.php')" />
 <input type="submit" value="Ego" onclick="document.getElementById('form').setAttribute('action','ego.php')" />
+<input type="submit" value="Morph" onclick="document.getElementById('form').setAttribute('action','morph.php')" />
 <input type="submit" value="Gear" onclick="document.getElementById('form').setAttribute('action','gear.php')" />
 </form>
 
