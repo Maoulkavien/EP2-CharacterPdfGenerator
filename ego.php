@@ -20,6 +20,7 @@ egoSkills($params->egoSkillsHints,$params->preprinted);
 //Muse
 egoMuseSkills($params->egoMuseSkillsHints,$params->preprinted);
 egoMuseAptitudes($params->egoMuseAptitudesHints);
+egoMuseStats($params->egoMuseStatsHints);
 egoMuseName();
 
 $pdf->Output($char->name.'-Ego.pdf', 'I');

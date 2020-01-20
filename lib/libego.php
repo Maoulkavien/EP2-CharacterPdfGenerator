@@ -200,6 +200,36 @@ function egoMuseAptitudes($hints=false){
 
 }
 
+function egoMuseStats($hints=false){
+  global $pdf;
+  global $char;
+  $fontSize= ($hints ? 4 : 8);
+  $o = - 1.5*pt2mm($fontSize);
+  $pdf->SetFont('Arial','',$fontSize);
+
+  $lines=array();
+  $lines[]=762/10;
+  $lines[]=840/10;
+
+  $cols=array();
+  $cols[]=1726/10;
+  $cols[]=1788/10;
+  $cols[]=1850/10;
+  $cols[]=1911/10;
+  $cols[]=1974/10;
+  $cols[]=2036/10;
+
+  $centering = ($hints ? 'L' : 'C'); 
+
+  $pdf->SetXY($cols[0],$lines[0]); $pdf->Cell($cols[1]-$cols[0],$o,$char->muse->lucidity,0,0,$centering);
+  $pdf->SetXY($cols[1],$lines[0]); $pdf->Cell($cols[2]-$cols[1],$o,$char->muse->trauma_threshold,0,0,$centering);
+  $pdf->SetXY($cols[2],$lines[0]); $pdf->Cell($cols[3]-$cols[2],$o,$char->muse->insanity_rating,0,0,$centering);
+  $pdf->SetXY($cols[0],$lines[1]); $pdf->Cell($cols[1]-$cols[0],$o,$char->muse->durability,0,0,$centering);
+  $pdf->SetXY($cols[1],$lines[1]); $pdf->Cell($cols[2]-$cols[1],$o,$char->muse->wound_threshold,0,0,$centering);
+  $pdf->SetXY($cols[2],$lines[1]); $pdf->Cell($cols[3]-$cols[2],$o,$char->muse->death_rating,0,0,$centering);
+
+}
+
 
 function egoTraits(){
   global $pdf;
