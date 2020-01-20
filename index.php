@@ -51,7 +51,7 @@ document.getElementById("egoparams").style="display:block";
 
 
 <form id='form' action="ego.php" method="POST" target="_blank">
-Paste the exported result from Arokha helper here : <br>
+Paste the exported result from <a href="https://arokha.com/eclipsehelper/sheet" >Arokha helper</a> here : <br>
 <textarea name="data" rows=30 cols=100></textarea>
 <br>
 <input type="checkbox" name="one" value="1" onchange="javascript:oneshot(this);">This character is a Pre-made for One-shot and does not need editability<br/>
