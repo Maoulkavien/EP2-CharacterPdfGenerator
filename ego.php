@@ -6,15 +6,17 @@ require_once __DIR__ . '/vendor/autoload.php';
 $pdf = newPDF('Maoulkavien-EP2_Ego.pdf');
 
 $char = loadCharacter($_POST['data']);
+$params = loadParameters($_POST);
 $references = loadReferences();
 
 $traits = $references->traits;
 
 egoHeaders();
-egoAptitudes(true);
+egoAptitudes($params->egoAptitudesHints);
+egoReps($params->egoRepHints,$params->egoDisplayFake);
 egoTraits();
-egoSkills(true);
-egoMuseSkills(true);
+egoSkills($params->egoSkillsHints,$params->preprinted);
+egoMuseSkills($params->egoMuseSkillsHints,$params->preprinted);
 
 $pdf->Output($char->name.'-Ego.pdf', 'I');
 ?>

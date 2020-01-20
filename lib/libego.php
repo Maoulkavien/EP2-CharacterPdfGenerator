@@ -2,6 +2,7 @@
 
 require('lib.php');
 
+
 function egoHeaders(){
   global $pdf;
   global $char;
@@ -34,6 +35,71 @@ function egoHeaders(){
   $pdf->SetXY($col4,$line2); $pdf->Cell(0,$o,$char->{'faction_name'},0,0);
 
 }
+
+function egoReps($hints=false,$fake=false){
+  global $pdf;
+  global $char;
+  global $references;
+  $fontSize= ($hints ? 4 : 10);
+  $o = - 2*pt2mm($fontSize);
+  $pdf->SetFont('Arial','',$fontSize);
+
+  $lines=array();
+  $lines[]=415/10; //real ID
+  $lines[]=513/10; //fake ID
+  $lines[]=545/10; //fake ID
+
+  $cols=array();
+  $cols[]=257/10;
+  $cols[]=335/10;
+  $cols[]=492/10;
+  $cols[]=569/10;
+  $cols[]=726/10;
+  $cols[]=803/10;
+  $cols[]=961/10;
+  $cols[]=1037/10;
+  $cols[]=1195/10;
+  $cols[]=1271/10;
+  $cols[]=1429/10;
+  $cols[]=1506/10;
+  $cols[]=1663/10;
+  $cols[]=1740/10;
+
+  $centering = ($hints ? 'L' : 'C'); 
+
+
+  $pdf->SetXY($cols[0],$lines[0]); $pdf->Cell($cols[1]-$cols[0],$o,$char->rep_real->a_rep->value,0,0,$centering);
+  $pdf->SetXY($cols[2],$lines[0]); $pdf->Cell($cols[3]-$cols[2],$o,$char->rep_real->c_rep->value,0,0,$centering);
+  $pdf->SetXY($cols[4],$lines[0]); $pdf->Cell($cols[5]-$cols[4],$o,$char->rep_real->f_rep->value,0,0,$centering);
+  $pdf->SetXY($cols[6],$lines[0]); $pdf->Cell($cols[7]-$cols[6],$o,$char->rep_real->g_rep->value,0,0,$centering);
+  $pdf->SetXY($cols[8],$lines[0]); $pdf->Cell($cols[9]-$cols[8],$o,$char->rep_real->i_rep->value,0,0,$centering);
+  $pdf->SetXY($cols[10],$lines[0]); $pdf->Cell($cols[11]-$cols[10],$o,$char->rep_real->r_rep->value,0,0,$centering);
+  $pdf->SetXY($cols[12],$lines[0]); $pdf->Cell($cols[13]-$cols[12],$o,$char->rep_real->x_rep->value,0,0,$centering);
+
+  if($fake){
+
+    $fontSize= ($hints ? 4 : 8);
+    $o = - 2*pt2mm($fontSize);
+    $pdf->SetFont('Arial','',$fontSize);
+    if(!$hints){
+      $lines[1]=529/10; //fake ID
+      $lines[2]=559/10; //fake ID
+    }
+
+    $pdf->SetXY($cols[0],$lines[1]); $pdf->Cell($cols[1]-$cols[0],$o,$char->rep_fake1->name,0,0,'L');
+
+    $pdf->SetXY($cols[0],$lines[2]); $pdf->Cell($cols[1]-$cols[0],$o,$char->rep_fake1->a_rep->value,0,0,$centering);
+    $pdf->SetXY($cols[2],$lines[2]); $pdf->Cell($cols[3]-$cols[2],$o,$char->rep_fake1->c_rep->value,0,0,$centering);
+    $pdf->SetXY($cols[4],$lines[2]); $pdf->Cell($cols[5]-$cols[4],$o,$char->rep_fake1->f_rep->value,0,0,$centering);
+    $pdf->SetXY($cols[6],$lines[2]); $pdf->Cell($cols[7]-$cols[6],$o,$char->rep_fake1->g_rep->value,0,0,$centering);
+    $pdf->SetXY($cols[8],$lines[2]); $pdf->Cell($cols[9]-$cols[8],$o,$char->rep_fake1->i_rep->value,0,0,$centering);
+    $pdf->SetXY($cols[10],$lines[2]); $pdf->Cell($cols[11]-$cols[10],$o,$char->rep_fake1->r_rep->value,0,0,$centering);
+    $pdf->SetXY($cols[12],$lines[2]); $pdf->Cell($cols[13]-$cols[12],$o,$char->rep_fake1->x_rep->value,0,0,$centering);
+
+
+  }
+}
+
 
 function egoAptitudes($hints=false){
   global $pdf;
@@ -247,19 +313,19 @@ function egoMuseSkills($hints=false,$preprinted=true){
   foreach($skills as $skill){
 
     if($count<33){
-//$preprinted=false;
+
       $pdf->SetFont('Arial','',9);
       $pdf->SetTextColor(193,80,82);
+
       if($preprinted) {
 	$field = substr(strstr($skill->name,':'),1);;
 	$pdf->SetXY($cols[0]+1,$lines_start+$count*$lines_add-3.9); $pdf->Cell($cols[1]-$cols[0]-2,3.5,$skill->name,0,0,'L',true);
 	$pdf->SetXY($cols[2]+1,$lines_start+$count*$lines_add-3.9); $pdf->Cell($cols[3]-$cols[2]-1.2,3.5,$skill->{'aptitude'},0,0,'C',true);
-//	$pdf->SetXY($cols[0],$lines_start+$count*$lines_add-3.8); $pdf->Cell($cols[1]-$cols[0],3.5,$skill->name,0,0,'L',true);
-//	$pdf->SetXY($cols[0]+17,$lines_start+$count*$lines_add); $pdf->Cell(0,-4,$field,0,0,'L');
       }else{
 	$pdf->SetXY($cols[0],$lines_start+$count*$lines_add); $pdf->Cell(0,-4,$skill->{'name'},0,0,'L');
 	$pdf->SetXY($cols[2],$lines_start+$count*$lines_add); $pdf->Cell($cols[3]-$cols[2],-4,$skill->{'aptitude'},0,0,'C');
       }
+
       $pdf->SetTextColor(0);
       $pdf->SetFont('Arial','',$fontSize);
 
@@ -268,10 +334,12 @@ function egoMuseSkills($hints=false,$preprinted=true){
       if(strpos($skill->name,"Fray") !== FALSE || strpos($skill->name,"Perceive") !== FALSE){
         $total += $char->muse->{$apt};
       }
+
       if($skill->rank > 0){
         $pdf->SetXY($cols[1],$lines_start+$count*$lines_add); $pdf->Cell($cols[2]-$cols[1],$o,$skill->{'rank'},0,0,$centering);
         $pdf->SetXY($cols[3],$lines_start+$count*$lines_add); $pdf->Cell($cols[4]-$cols[3],$o,$total,0,0,$centering);
       }
+
       $count++;
     }
 
@@ -279,10 +347,11 @@ function egoMuseSkills($hints=false,$preprinted=true){
 }
 
 
-function blank(){
+function blank($hints=false){
   global $pdf;
   global $char;
-  $fontSize=6;
+  global $references;
+  $fontSize= ($hints ? 4 : 6);
   $o = - 2*pt2mm($fontSize);
   $pdf->SetFont('Arial','',$fontSize);
 
@@ -292,18 +361,14 @@ function blank(){
   $cols=array();
   $cols[]=0;
 
+  $centering = ($hints ? 'L' : 'C'); 
+
   $count=0;
   foreach($char->{'TOREPLACE'} as $TOREPLACE){
 
     if($count<21){
-      if(isset($TOREPLACE->{'default'}) && $TOREPLACE->{'default'}){
-        $pdf->SetFont('Arial','B',$fontSize);
-      }
-      else{
-        $pdf->SetFont('Arial','',$fontSize);
-      }
 
-      $pdf->SetXY($cols[0],$lines[$count]); $pdf->Cell($cols[1]-$cols[0],$o,$TOREPLACE->{'cost'},0,0,'C');
+      $pdf->SetXY($cols[0],$lines[$count]); $pdf->Cell($cols[1]-$cols[0],$o,$TOREPLACE->{'cost'},0,0,$centering);
       $pdf->SetXY($cols[1],$lines[$count]); $pdf->Cell(0,$o,$TOREPLACE->{'name'},0,0,'L');
       $pdf->SetXY($cols[2],$lines[$count]); $pdf->Cell(0,$o,$TOREPLACE->{'summary'},0,0,'L');
       $count++;

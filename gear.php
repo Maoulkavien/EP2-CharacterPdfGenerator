@@ -7,6 +7,7 @@ $pdf = newPDF('Maoulkavien-EP2_Gear.pdf');
 
 $char = loadCharacter($_POST['data']);
 $references = loadReferences();
+$params = loadParameters();
 
 $traits = $references->traits;
 $wares = $references->wares;

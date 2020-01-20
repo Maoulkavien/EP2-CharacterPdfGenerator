@@ -2,6 +2,25 @@
 
 use LZCompressor\LZString as LZ;
 
+function loadParameters($post){
+
+$params=new stdClass();
+
+$params->egoRepHints = (isset($post['egoRepHints']) && $post['egoRepHints'] == 1 );
+$params->egoDisplayFake = (isset($post['egoDisplayFake']) && $post['egoDisplayFake'] == 1 );
+$params->egoAptitudesHints = (isset($post['egoAptitudesHints']) && $post['egoAptitudesHints'] == 1 );
+$params->egoStatsHints = (isset($post['egoStatsHints']) && $post['egoStatsHints'] == 1 );
+$params->egoSkillsHints = (isset($post['egoSkillsHints']) && $post['egoSkillsHints'] == 1 );
+$params->egoMuseAptitudesHints = (isset($post['egoMuseAptitudesHints']) && $post['egoMuseAptitudesHints'] == 1 );
+$params->egoMuseStatsHints = (isset($post['egoMuseStatsHints']) && $post['egoMuseStatsHints'] == 1 );
+$params->egoMuseSkillsHints = (isset($post['egoMuseSkillsHints']) && $post['egoMuseSkillsHints'] == 1 );
+$params->preprinted = (isset($post['preprinted']) && $post['preprinted'] == 1 );
+
+
+return $params;
+
+}
+
 function loadJson($filename= null){
   return json_decode(file_get_contents("EP2-Data/".$filename));
 }
