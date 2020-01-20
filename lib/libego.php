@@ -231,6 +231,32 @@ function egoMuseStats($hints=false){
 }
 
 
+function egoStats($hints=false){
+  global $pdf;
+  global $char;
+  $fontSize= ($hints ? 4 : 8);
+  $o = - 1.5*pt2mm($fontSize);
+  $pdf->SetFont('Arial','',$fontSize);
+
+  $lines=array();
+  $lines[]=898/10;
+  $lines[]=948/10;
+  $lines[]=999/10;
+
+  $cols=array();
+  $cols[]=1146/10;
+  $cols[]=1246/10;
+
+  $centering = ($hints ? 'L' : 'C'); 
+
+  $lucidity=$char->wil_base*2+$char->lucidity_mod;
+  $pdf->SetXY($cols[0],$lines[0]); $pdf->Cell($cols[1]-$cols[0],$o,$lucidity,0,0,$centering);
+  $pdf->SetXY($cols[0],$lines[1]); $pdf->Cell($cols[1]-$cols[0],$o,ceil($lucidity/5),0,0,$centering);
+  $pdf->SetXY($cols[0],$lines[2]); $pdf->Cell($cols[1]-$cols[0],$o,$lucidity*2,0,0,$centering);
+
+}
+
+
 function egoTraits(){
   global $pdf;
   global $char;

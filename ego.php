@@ -15,6 +15,7 @@ egoHeaders();
 egoAptitudes($params->egoAptitudesHints);
 egoReps($params->egoRepHints,$params->egoDisplayFake);
 egoTraits();
+egoStats($params->egoStatsHints);
 egoSkills($params->egoSkillsHints,$params->preprinted);
 
 //Muse
