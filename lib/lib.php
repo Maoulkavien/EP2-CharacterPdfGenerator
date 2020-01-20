@@ -14,6 +14,10 @@ $params->egoSkillsHints = (isset($post['egoSkillsHints']) && $post['egoSkillsHin
 $params->egoMuseAptitudesHints = (isset($post['egoMuseAptitudesHints']) && $post['egoMuseAptitudesHints'] == 1 );
 $params->egoMuseStatsHints = (isset($post['egoMuseStatsHints']) && $post['egoMuseStatsHints'] == 1 );
 $params->egoMuseSkillsHints = (isset($post['egoMuseSkillsHints']) && $post['egoMuseSkillsHints'] == 1 );
+$params->morphCheckDefaults = (isset($post['morphCheckDefaults']) && $post['morphCheckDefaults'] == 1 );
+$params->morphCheckAll = (isset($post['morphCheckAll']) && $post['morphCheckAll'] == 1 );
+$params->morphStatsHints = (isset($post['morphStatsHints']) && $post['morphStatsHints'] == 1 );
+
 $params->preprinted = (isset($post['preprinted']) && $post['preprinted'] == 1 );
 
 

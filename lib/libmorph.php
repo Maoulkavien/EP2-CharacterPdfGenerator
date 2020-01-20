@@ -19,14 +19,14 @@ function morphHeaders(){
 
 }
 
-function morphTraits(){
+function morphTraits($defaults=false,$all=false){
   global $pdf;
   global $char;
   global $traits;
   global $morphs;
 
   $fontSize=5.5;
-  $o = - pt2mm($fontSize);
+  $o = - 1.2*pt2mm($fontSize);
   $pdf->SetFont('Arial','',$fontSize);
 
   $lines=array();
@@ -40,6 +40,7 @@ function morphTraits(){
   $lines[]=66.0;
 
   $cols=array();
+  $cols[]=75.6;
   $cols[]=79.6;
   $cols[]=85.9;
   $cols[]=92.7;
@@ -47,9 +48,11 @@ function morphTraits(){
 
   $positive=0;
   $negative=0;
+  $isDefault = false;
   foreach($char->{'morph_traits'} as $trait){
 
-    if(isDefaultTrait($morphs,$char->{'morph_name'},$trait->{'name'})){
+    $isDefault = isDefaultTrait($morphs,$char->{'morph_name'},$trait->{'name'});
+    if($isDefault){
       $pdf->SetFont('Arial','B',$fontSize);
     }
     else{
@@ -63,26 +66,34 @@ function morphTraits(){
 
     if($trait->{'type'} == "Positive" && $positive<4){
 
-      $pdf->SetXY($cols[0],$lines[$positive]+$o); $pdf->Cell($cols[1]-$cols[0],0,$cost,0,0,'C');
-      $pdf->SetXY($cols[1],$lines[$positive]+$o); $pdf->Cell($cols[2]-$cols[1],0,$trait->{'level'},0,0,'C');
-      $pdf->SetXY($cols[2],$lines[$positive]+$o); $pdf->Cell(0,0,$trait->{'name'},0,0,'L');
+      if( ($defaults && $isDefault) || $all){
+        $pdf->SetXY($cols[0],$lines[$positive]+$o); $pdf->Cell($cols[1]-$cols[0],0,'X',0,0,'C');
+      }
+      $pdf->SetXY($cols[1],$lines[$positive]+$o); $pdf->Cell($cols[2]-$cols[1],0,$cost,0,0,'C');
+      $pdf->SetXY($cols[2],$lines[$positive]+$o); $pdf->Cell($cols[3]-$cols[2],0,$trait->{'level'},0,0,'C');
+      $pdf->SetXY($cols[3],$lines[$positive]+$o); $pdf->Cell(0,0,$trait->{'name'},0,0,'L');
       if(mb_strlen($trait->{'summary'}) > 90){
-        $pdf->SetXY($cols[3],$lines[$positive]-4.5); $pdf->MultiCell(90,2,$trait->{'summary'},0,0,'L');
+        $pdf->SetXY($cols[4],$lines[$positive]-4.5); $pdf->MultiCell(90,2,$trait->{'summary'},0,0,'L');
       }
       else{
-        $pdf->SetXY($cols[3],$lines[$positive]+$o); $pdf->Cell(0,0,$trait->{'summary'},0,0,'L');
+        $pdf->SetXY($cols[4],$lines[$positive]+$o); $pdf->Cell(0,0,$trait->{'summary'},0,0,'L');
       }
       $positive++;
     }
     if($trait->{'type'} == "Negative" && $negative<4){
-      $pdf->SetXY($cols[0],$lines[$negative+4]+$o); $pdf->Cell($cols[1]-$cols[0],0,$cost,0,0,'C');
-      $pdf->SetXY($cols[1],$lines[$negative+4]+$o); $pdf->Cell($cols[2]-$cols[1],0,$trait->{'level'},0,0,'C');
-      $pdf->SetXY($cols[2],$lines[$negative+4]+$o); $pdf->Cell(0,0,$trait->{'name'},0,0,'L');
+
+      if( ($defaults && $isDefault) || $all){
+        $pdf->SetXY($cols[0],$lines[$negative+4]+$o); $pdf->Cell($cols[1]-$cols[0],0,'X',0,0,'C');
+      }
+
+      $pdf->SetXY($cols[1],$lines[$negative+4]+$o); $pdf->Cell($cols[2]-$cols[1],0,$cost,0,0,'C');
+      $pdf->SetXY($cols[2],$lines[$negative+4]+$o); $pdf->Cell($cols[3]-$cols[2],0,$trait->{'level'},0,0,'C');
+      $pdf->SetXY($cols[3],$lines[$negative+4]+$o); $pdf->Cell(0,0,$trait->{'name'},0,0,'L');
       if(mb_strlen($trait->{'summary'}) > 90){
-        $pdf->SetXY($cols[3],$lines[$negative+4]-4.5); $pdf->MultiCell(90,2,$trait->{'summary'},0,0,'L');
+        $pdf->SetXY($cols[4],$lines[$negative+4]-4.5); $pdf->MultiCell(90,2,$trait->{'summary'},0,0,'L');
       }
       else{
-        $pdf->SetXY($cols[3],$lines[$negative+4]+$o); $pdf->Cell(0,0,$trait->{'summary'},0,0,'L');
+        $pdf->SetXY($cols[4],$lines[$negative+4]+$o); $pdf->Cell(0,0,$trait->{'summary'},0,0,'L');
       }
       $negative++;
     }
@@ -91,7 +102,7 @@ function morphTraits(){
   }
 }
 
-function morphWare(){
+function morphWare($defaults=false,$all=false){
   global $pdf;
   global $char;
   global $wares;
@@ -125,14 +136,17 @@ function morphWare(){
 
 
   $cols=array();
+  $cols[]=756/10;
   $cols[]=796/10;
   $cols[]=848/10;
   $cols[]=1076/10;
 
   $count=0;
+  $isDefault = false;
   foreach($char->{'ware'} as $ware){
     if($count<21){
-      if(isDefaultWare($morphs,$char->{'morph_name'},$ware->{'name'})){
+      $isDefault = isDefaultWare($morphs,$char->{'morph_name'},$ware->{'name'});
+      if($isDefault){
         $pdf->SetFont('Arial','B',$fontSize);
       }
       else{
@@ -143,9 +157,13 @@ function morphWare(){
       $wareRef = byName($wares,$ware->{'name'});
       if($wareRef != null ){ $cost = $wareRef->{'complexity/gp'}; }
 
-      $pdf->SetXY($cols[0],$lines[$count]); $pdf->Cell($cols[1]-$cols[0],$o,$cost,0,0,'C');
-      $pdf->SetXY($cols[1],$lines[$count]); $pdf->Cell(0,$o,$ware->{'name'},0,0,'L');
-      $pdf->SetXY($cols[2],$lines[$count]); $pdf->Cell(0,$o,$ware->{'summary'},0,0,'L');
+      if( ($defaults && $isDefault) || $all){
+          $pdf->SetXY($cols[0],$lines[$count]); $pdf->Cell($cols[1]-$cols[0],$o,'X',0,0,'C');
+      }
+
+      $pdf->SetXY($cols[1],$lines[$count]); $pdf->Cell($cols[2]-$cols[1],$o,$cost,0,0,'C');
+      $pdf->SetXY($cols[2],$lines[$count]); $pdf->Cell(0,$o,$ware->{'name'},0,0,'L');
+      $pdf->SetXY($cols[3],$lines[$count]); $pdf->Cell(0,$o,$ware->{'summary'},0,0,'L');
       $count++;
     }
 
@@ -264,11 +282,11 @@ function morphPools(){
 
 
 
-function morphStats(){
+function morphStats($hints=false){
   global $pdf;
   global $char;
-  $fontSize=6;
-  $o = - 2.3*pt2mm($fontSize);
+  $fontSize=($hints ? 4 : 10);
+  $o = - 1.5*pt2mm($fontSize);
   $pdf->SetFont('Arial','',$fontSize);
 
   $lines=array();
@@ -278,12 +296,14 @@ function morphStats(){
 
 
   $cols=array();
-  $cols[]=434/10;
+  $cols[]=595/10;
+  $cols[]=685/10;
 
+  $centering = ($hints ? 'L' : 'C');
 
-  $pdf->SetXY($cols[0],$lines[0]); $pdf->Cell(0,$o,'(base '.$char->{'durability_base'}.')',0,0,'L');
-  $pdf->SetXY($cols[0],$lines[1]); $pdf->Cell(0,$o,'(base '.($char->{'durability_base'}/5).')',0,0,'L');
-  $pdf->SetXY($cols[0],$lines[2]); $pdf->Cell(0,$o,'(base '.ceil($char->{'durability_base'}*1.5).')',0,0,'L');
+  $pdf->SetXY($cols[0],$lines[0]); $pdf->Cell($cols[1]-$cols[0],$o,$char->{'durability_base'},0,0,$centering);
+  $pdf->SetXY($cols[0],$lines[1]); $pdf->Cell($cols[1]-$cols[0],$o,$char->{'durability_base'}/5,0,0,$centering);
+  $pdf->SetXY($cols[0],$lines[2]); $pdf->Cell($cols[1]-$cols[0],$o,ceil($char->{'durability_base'}*1.5),0,0,$centering);
 
 }
 

@@ -3,9 +3,13 @@ Uses data from arokha character generation to generate corresponding filled PDF
 
 Required libraries :
 
-composer require LZCompressor
+composer require nullpunkt/lz-string-php
+
 composer require mpdf/mpdf
-composer require paragonie/random_compat:<9.99
+
+/!\ don't forget to make vendor/mpdf/mpdf/tmp writable
+
+composer require 'paragonie/random_compat:<9.99'
 
 Required git repositories :
 

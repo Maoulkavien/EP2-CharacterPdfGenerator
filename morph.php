@@ -7,7 +7,7 @@ $pdf = newPDF('Maoulkavien-EP2_Morph.pdf');
 
 $char = loadCharacter($_POST['data']);
 $references = loadReferences();
-$params = loadParameters();
+$params = loadParameters($_POST);
 
 $traits = $references->traits;
 $wares = $references->wares;
@@ -15,11 +15,11 @@ $morphs = $references->morphs;
 
 
 morphHeaders();
-morphTraits();
-morphWare();
+morphTraits($params->morphCheckDefaults,$params->morphCheckAll);
+morphWare($params->morphCheckDefaults,$params->morphCheckAll);
 morphBasics();
 morphPools();
-morphStats();
+morphStats($params->morphStatsHints);
 morphMovements();
 morphNotes();
 combatStats();

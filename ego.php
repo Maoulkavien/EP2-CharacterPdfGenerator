@@ -16,7 +16,11 @@ egoAptitudes($params->egoAptitudesHints);
 egoReps($params->egoRepHints,$params->egoDisplayFake);
 egoTraits();
 egoSkills($params->egoSkillsHints,$params->preprinted);
+
+//Muse
 egoMuseSkills($params->egoMuseSkillsHints,$params->preprinted);
+egoMuseAptitudes($params->egoMuseAptitudesHints);
+egoMuseName();
 
 $pdf->Output($char->name.'-Ego.pdf', 'I');
 ?>

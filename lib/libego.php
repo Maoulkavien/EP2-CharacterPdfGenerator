@@ -36,6 +36,7 @@ function egoHeaders(){
 
 }
 
+
 function egoReps($hints=false,$fake=false){
   global $pdf;
   global $char;
@@ -78,7 +79,8 @@ function egoReps($hints=false,$fake=false){
 
   if($fake){
 
-    $fontSize= ($hints ? 4 : 8);
+
+    $fontSize= 8;
     $o = - 2*pt2mm($fontSize);
     $pdf->SetFont('Arial','',$fontSize);
     if(!$hints){
@@ -87,6 +89,10 @@ function egoReps($hints=false,$fake=false){
     }
 
     $pdf->SetXY($cols[0],$lines[1]); $pdf->Cell($cols[1]-$cols[0],$o,$char->rep_fake1->name,0,0,'L');
+
+    $fontSize= ($hints ? 4 : 8);
+    $o = - 2*pt2mm($fontSize);
+    $pdf->SetFont('Arial','',$fontSize);
 
     $pdf->SetXY($cols[0],$lines[2]); $pdf->Cell($cols[1]-$cols[0],$o,$char->rep_fake1->a_rep->value,0,0,$centering);
     $pdf->SetXY($cols[2],$lines[2]); $pdf->Cell($cols[3]-$cols[2],$o,$char->rep_fake1->c_rep->value,0,0,$centering);
@@ -99,6 +105,7 @@ function egoReps($hints=false,$fake=false){
 
   }
 }
+
 
 
 function egoAptitudes($hints=false){
@@ -137,6 +144,62 @@ function egoAptitudes($hints=false){
   $pdf->SetXY($col2,$line6); $pdf->Cell($col3-$col2,$o,$char->{'wil_base'}*3+$char->wil_check_postmod,0,0,$centering);
 
 }
+
+function egoMuseName(){
+
+  global $pdf;
+  global $char;
+  $fontSize= 10;
+  $o = - 1.5*pt2mm($fontSize);
+  $pdf->SetFont('Arial','',$fontSize);
+
+  $line=676/10;
+  $col=1562/10;
+
+  $pdf->SetXY($col,$line); $pdf->Cell(0,$o,$char->muse->name,0,0,'L');
+
+  
+
+}
+
+function egoMuseAptitudes($hints=false){
+  global $pdf;
+  global $char;
+  $fontSize= ($hints ? 4 : 8);
+  $o = - 1.5*pt2mm($fontSize);
+  $pdf->SetFont('Arial','',$fontSize);
+
+  $lines=array();
+  $lines[]=750/10;
+  $lines[]=796/10;
+  $lines[]=845/10;
+
+  $cols=array();
+  $cols[]=1382/10;
+  $cols[]=1436/10;
+  $cols[]=1492/10;
+  $cols[]=1592/10;
+  $cols[]=1646/10;
+  $cols[]=1700/10;
+
+  $centering = ($hints ? 'L' : 'C'); 
+
+  $pdf->SetXY($cols[0],$lines[0]); $pdf->Cell($cols[1]-$cols[0],$o,$char->muse->cog_base,0,0,$centering);
+  $pdf->SetXY($cols[0],$lines[1]); $pdf->Cell($cols[1]-$cols[0],$o,$char->muse->int_base,0,0,$centering);
+  $pdf->SetXY($cols[0],$lines[2]); $pdf->Cell($cols[1]-$cols[0],$o,$char->muse->ref_base,0,0,$centering);
+  $pdf->SetXY($cols[3],$lines[0]); $pdf->Cell($cols[4]-$cols[3],$o,$char->muse->sav_base,0,0,$centering);
+  $pdf->SetXY($cols[3],$lines[1]); $pdf->Cell($cols[4]-$cols[3],$o,$char->muse->som_base,0,0,$centering);
+  $pdf->SetXY($cols[3],$lines[2]); $pdf->Cell($cols[4]-$cols[3],$o,$char->muse->wil_base,0,0,$centering);
+
+  $pdf->SetXY($cols[1],$lines[0]); $pdf->Cell($cols[2]-$cols[1],$o,$char->muse->cog_base*3+$char->muse->cog_check_postmod,0,0,$centering);
+  $pdf->SetXY($cols[1],$lines[1]); $pdf->Cell($cols[2]-$cols[1],$o,$char->muse->int_base*3+$char->muse->int_check_postmod,0,0,$centering);
+  $pdf->SetXY($cols[1],$lines[2]); $pdf->Cell($cols[2]-$cols[1],$o,$char->muse->ref_base*3+$char->muse->ref_check_postmod,0,0,$centering);
+  $pdf->SetXY($cols[4],$lines[0]); $pdf->Cell($cols[5]-$cols[4],$o,$char->muse->sav_base*3+$char->muse->sav_check_postmod,0,0,$centering);
+  $pdf->SetXY($cols[4],$lines[1]); $pdf->Cell($cols[5]-$cols[4],$o,$char->muse->som_base*3+$char->muse->som_check_postmod,0,0,$centering);
+  $pdf->SetXY($cols[4],$lines[2]); $pdf->Cell($cols[5]-$cols[4],$o,$char->muse->wil_base*3+$char->muse->wil_check_postmod,0,0,$centering);
+
+}
+
 
 function egoTraits(){
   global $pdf;
